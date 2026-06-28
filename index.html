@@ -409,7 +409,7 @@ audio {
      STAGE 1 — KISMAT
 ══════════════════════════════════════════ -->
 <div class="screen" id="s1">
-  <audio id="driftwood" src="DWP.m4a" loop></audio>
+  <audio id="hh" src="hh.mp3" loop></audio>
   <div class="frame">
     <span class="corner-br" aria-hidden="true">✦</span>
     <div class="act-tag">Act I</div>
@@ -612,7 +612,17 @@ function goTo(id) {
     const input = target.querySelector('.puzzle-input');
     if (input) setTimeout(() => input.focus(), 400);
 
-    // Driftwood music — plays on s2 only
+    const hh = document.getElementById('hh');
+    if (hh) {
+      if (id === 's2') {
+        hh.currentTime = 0;
+        hh.play().catch(() => {}); // silently handle autoplay block
+      } else {
+        hh.pause();
+        hh.currentTime = 0;
+      }
+    }
+
     const driftwood = document.getElementById('driftwood');
     if (driftwood) {
       if (id === 's2') {
