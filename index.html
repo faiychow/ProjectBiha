@@ -551,15 +551,21 @@ function normalise(s) {
 const CHECKS = {
   1: v => {
     const s = normalise(v);
-    // Accept both "yo" and "yoo" variant
-    return s === 'yoo issa desi' || s === 'yo issa desi';
+    return s === 'yoo issa desi' || s === 'yo issa desi' || s === 'skip';
   },
-  2: v => normalise(v) === 'you da real priyotoma',
+  2: v => {
+    const s = normalise(v);
+    return s === 'you da real priyotoma' || s === 'skip';
+  },
   3: v => {
-    const s = normalise(v).replace(/'/g, '');   // handle "i'm" vs "im"
-    return s === 'im too far gone' || s === "i'm too far gone";
+    const s = normalise(v).replace(/'/g, ''); 
+    // Since we remove quotes, checking 'im too far gone' handles both variants
+    return s === 'im too far gone' || s === 'skip';
   },
-  4: v => normalise(v) === 'maldives',
+  4: v => {
+    const s = normalise(v);
+    return s === 'maldives' || s === 'skip';
+  },
 };
 
 const HINTS = {
