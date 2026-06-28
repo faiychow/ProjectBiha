@@ -451,7 +451,7 @@ audio {
      STAGE 3 — RAAZ
 ══════════════════════════════════════════ -->
 <div class="screen" id="s3">
-  
+  <audio id="wb" src="Wanna BE.mp3" loop></audio>
   <div class="frame">
     <span class="corner-br" aria-hidden="true">✦</span>
     <div class="act-tag">Act III</div>
@@ -489,14 +489,10 @@ audio {
     <div class="act-meaning">dream &nbsp;·&nbsp; after it all works out</div>
     <div class="rule"><span>✦</span></div>
     <p class="clue">
-      Like Raj and Simran, the road ahead won't be straight.
-      Families are traditional. Love takes patience and courage.
+      Like Raj and Simran, our road ahead won't be straight kinda scary lmao.
+      Its kinda nerve wracking to think about too but I just think about the feeling after everything works out. 
       <br /><br />
-      But on the other side of all of it —
-      when it all works out, when the story lands —
-      there's a place already waiting for the two of you.
-      <br /><br />
-      Where does it end up?
+      MATTER A FACT FIRST TRIP WHERE?
     </p>
     <input class="puzzle-input" id="in4" type="text" placeholder="type your answer…" autocomplete="off" />
     <button class="unlock-btn" onclick="check(4)">Unlock &nbsp;✦</button>
@@ -573,7 +569,7 @@ const HINTS = {
   1: 'Think back to the very first message I ever sent you…',
   2: 'The comment that broke the silence 🍂',
   3: 'Something you wrote in your diary before the confession…',
-  4: 'Where the honeymoon happens — after it all works out ✨',
+  4: 'Where the honeymoon happens this one is kinda unfair cuz you gave no input ✨',
 };
 
 const NEXT = { 1: 's2', 2: 's3', 3: 's4', 4: 'unlock' };
@@ -615,6 +611,17 @@ function goTo(id) {
       } else {
         driftwood.pause();
         driftwood.currentTime = 0;
+      }
+    }
+
+    const wb = document.getElementById('wb');
+    if (wb) {
+      if (id === 's3') {
+        wb.currentTime = 0;
+        wb.play().catch(() => {}); // silently handle autoplay block
+      } else {
+        wb.pause();
+        wb.currentTime = 0;
       }
     }
 
