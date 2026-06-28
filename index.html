@@ -7,9 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
 
-/* ============================================================
-   DESIGN TOKENS
-   ============================================================ */
 :root {
   --bg:        #080300;
   --bg2:       #140800;
@@ -23,9 +20,6 @@
   --border:    rgba(200, 146, 26, 0.35);
 }
 
-/* ============================================================
-   RESET & BASE
-   ============================================================ */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 html, body {
@@ -37,9 +31,6 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ============================================================
-   AMBIENT BACKGROUND
-   ============================================================ */
 body::before {
   content: '';
   position: fixed; inset: 0; z-index: 0;
@@ -50,7 +41,6 @@ body::before {
   pointer-events: none;
 }
 
-/* Diagonal shimmer lines */
 body::after {
   content: '';
   position: fixed; inset: 0; z-index: 0;
@@ -64,9 +54,6 @@ body::after {
   pointer-events: none;
 }
 
-/* ============================================================
-   SCREEN SYSTEM
-   ============================================================ */
 .screen {
   position: fixed; inset: 0; z-index: 1;
   display: flex; flex-direction: column;
@@ -81,9 +68,6 @@ body::after {
   pointer-events: all;
 }
 
-/* ============================================================
-   PUZZLE FRAME
-   ============================================================ */
 .frame {
   position: relative;
   width: 100%; max-width: 540px;
@@ -104,7 +88,6 @@ body::after {
   to   { opacity: 1; transform: translateY(0)   scale(1);    }
 }
 
-/* corner ornaments */
 .frame::before, .frame::after,
 .frame .corner-br, .frame .corner-tl-inner {
   position: absolute;
@@ -149,7 +132,6 @@ body::after {
   margin-bottom: 1.8rem;
 }
 
-/* gold rule */
 .rule {
   display: flex; align-items: center; gap: 0.8rem;
   margin-bottom: 1.8rem;
@@ -244,7 +226,7 @@ body::after {
 .shake { animation: shake 0.45s ease; }
 
 /* ============================================================
-   PROGRESS DOTS
+   PROGRESSIONN
    ============================================================ */
 .dots {
   display: flex; justify-content: center;
@@ -298,6 +280,7 @@ body::after {
   color: var(--gold);
   font-family: 'Cinzel', serif;
   font-size: 0.72rem;
+  font-weight: bold;
   letter-spacing: 0.35em;
   text-transform: uppercase;
   cursor: pointer;
@@ -401,8 +384,8 @@ audio {
 <div class="screen active" id="intro">
   <span class="diya">🪔</span>
   <h1 class="intro-title">A Gift<br>For My Love</h1>
-  <p class="intro-sub">four locks · one truth · all of us</p>
-  <button class="begin-btn" onclick="goTo('s1')">Begin &nbsp;✦</button>
+  <p class="intro-sub">four puzzles · muehehe · will you get them</p>
+  <button class="begin-btn" onclick="goTo('s1')">Begin &gt;.&lt; &nbsp;✦</button>
 </div>
 
 <!-- ══════════════════════════════════════════
@@ -615,11 +598,11 @@ function goTo(id) {
     const hh = document.getElementById('hh');
     if (hh) {
       if (id === 's1') {
-        hh.currentTime = 93;
+        hh.currentTime = 0;
         hh.play().catch(() => {}); // silently handle autoplay block
       } else {
         hh.pause();
-        hh.currentTime = 93;
+        hh.currentTime = 0;
       }
     }
 
