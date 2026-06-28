@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A Gift For My Love</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root {
+  --bg:        #080300;
+  --bg2:       #140800;
+  --crimson:   #8B1523;
+  --crimson2:  #6A1019;
+  --gold:      #C8921A;
+  --gold-lt:   #EDBC50;
+  --saffron:   #E05C0A;
+  --cream:     #FDF4E3;
+  --muted:     rgba(253, 244, 227, 0.55);
+  --border:    rgba(200, 146, 26, 0.35);
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   AMBIENT BACKGROUND
+   ============================================================ */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 60%, rgba(139,21,35,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 85% 25%, rgba(200,146,26,0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 50% at 55% 85%, rgba(224,92,10,0.10) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Diagonal shimmer lines */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 40px,
+    rgba(200,146,26,0.02) 40px,
+    rgba(200,146,26,0.02) 41px
+  );
+  pointer-events: none;
+}
+
+/* ============================================================
+   SCREEN SYSTEM
+   ============================================================ */
+.screen {
+  position: fixed; inset: 0; z-index: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s ease;
+}
+.screen.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ============================================================
+   PUZZLE FRAME
+   ============================================================ */
+.frame {
+  position: relative;
+  width: 100%; max-width: 540px;
+  background: linear-gradient(160deg, rgba(20,8,0,0.97) 0%, rgba(8,3,0,0.99) 100%);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 2.8rem 3rem 2.4rem;
+  box-shadow:
+    0 0 0 1px rgba(200,146,26,0.12),
+    0 0 60px rgba(200,146,26,0.08),
+    0 30px 80px rgba(0,0,0,0.7),
+    inset 0 1px 0 rgba(200,146,26,0.15);
+  animation: frameIn 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes frameIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);    }
+}
+
+/* corner ornaments */
+.frame::before, .frame::after,
+.frame .corner-br, .frame .corner-tl-inner {
+  position: absolute;
+  font-size: 0.9rem;
+  color: var(--gold);
+  opacity: 0.45;
+  line-height: 1;
+}
+.frame::before  { content: '✦'; top: 1rem;    left: 1rem;   }
+.frame::after   { content: '✦'; bottom: 1rem; right: 1rem;  }
+.corner-br { display:block; position:absolute; top:1rem; right:1rem; content:'✦'; color:var(--gold); opacity:.25; font-size:.9rem; }
+
+/* ============================================================
+   PUZZLE TYPOGRAPHY
+   ============================================================ */
+.act-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.38em;
+  color: var(--gold);
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin-bottom: 0.35rem;
+}
+
+.act-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--cream);
+  margin-bottom: 0.2rem;
+}
+
+.act-meaning {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  opacity: 0.6;
+  margin-bottom: 1.8rem;
+}
+
+/* gold rule */
+.rule {
+  display: flex; align-items: center; gap: 0.8rem;
+  margin-bottom: 1.8rem;
+}
+.rule::before, .rule::after {
+  content: '';
+  flex: 1; height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  opacity: 0.3;
+}
+.rule span { color: var(--saffron); font-size: 0.85rem; }
+
+.clue {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.85;
+  color: rgba(253,244,227,0.82);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* ============================================================
+   INPUT & BUTTON
+   ============================================================ */
+.puzzle-input {
+  display: block; width: 100%;
+  background: rgba(200,146,26,0.06);
+  border: 1px solid rgba(200,146,26,0.28);
+  border-radius: 2px;
+  padding: 0.85rem 1.2rem;
+  color: var(--cream);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  margin-bottom: 0.85rem;
+}
+.puzzle-input::placeholder { color: rgba(253,244,227,0.22); font-style: italic; }
+.puzzle-input:focus {
+  border-color: rgba(200,146,26,0.7);
+  box-shadow: 0 0 22px rgba(200,146,26,0.12);
+}
+.puzzle-input.correct {
+  border-color: #4caf50;
+  box-shadow: 0 0 22px rgba(76,175,80,0.25);
+}
+
+.unlock-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson2) 100%);
+  border: 1px solid rgba(200,146,26,0.35);
+  border-radius: 2px;
+  padding: 0.88rem 1rem;
+  color: var(--cream);
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.unlock-btn:hover {
+  background: linear-gradient(135deg, #A81C2C 0%, var(--crimson) 100%);
+  box-shadow: 0 6px 24px rgba(139,21,35,0.45);
+  transform: translateY(-1px);
+}
+.unlock-btn:active { transform: translateY(0); }
+
+.err-msg {
+  text-align: center;
+  color: var(--saffron);
+  font-size: 0.76rem;
+  font-style: italic;
+  min-height: 1.2rem;
+  margin-top: 0.7rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.err-msg.show { opacity: 1; }
+
+/* shake */
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  18%     { transform: translateX(-9px); }
+  36%     { transform: translateX(9px); }
+  54%     { transform: translateX(-5px); }
+  72%     { transform: translateX(5px); }
+}
+.shake { animation: shake 0.45s ease; }
+
+/* ============================================================
+   PROGRESS DOTS
+   ============================================================ */
+.dots {
+  display: flex; justify-content: center;
+  gap: 0.55rem; margin-top: 1.6rem;
+}
+.dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: rgba(200,146,26,0.22);
+  transition: background 0.4s, transform 0.4s;
+}
+.dot.on  { background: var(--gold);    transform: scale(1.4); }
+.dot.done{ background: var(--saffron); transform: scale(1); }
+
+/* ============================================================
+   INTRO SCREEN
+   ============================================================ */
+#intro { text-align: center; }
+
+.diya { font-size: 3rem; margin-bottom: 1.6rem; animation: divaFloat 3.5s ease-in-out infinite; display: block; }
+@keyframes divaFloat {
+  0%,100% { transform: translateY(0); filter: drop-shadow(0 0 8px rgba(200,146,26,0.4)); }
+  50%     { transform: translateY(-12px); filter: drop-shadow(0 0 20px rgba(224,92,10,0.6)); }
+}
+
+.intro-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-weight: 700;
+  line-height: 1.15;
+  background: linear-gradient(135deg, var(--cream) 20%, var(--gold-lt) 60%, var(--cream) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.intro-sub {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.45em;
+  color: var(--gold);
+  opacity: 0.65;
+  margin-bottom: 3rem;
+}
+
+.begin-btn {
+  position: relative; overflow: hidden;
+  background: transparent;
+  border: 1px solid var(--gold);
+  border-radius: 2px;
+  padding: 1rem 3.2rem;
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.35s;
+}
+.begin-btn::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--gold);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.35s ease;
+  z-index: -1;
+}
+.begin-btn:hover { color: var(--bg); }
+.begin-btn:hover::after { transform: scaleX(1); }
+
+/* ============================================================
+   UNLOCK SCREEN
+   ============================================================ */
+#unlock { text-align: center; overflow: hidden; }
+
+.unlock-inner { position: relative; z-index: 2; max-width: 520px; }
+
+.unlock-diya { font-size: 3rem; margin-bottom: 1.2rem; display:block; animation: divaFloat 3s ease-in-out infinite; }
+
+.unlock-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.15;
+  background: linear-gradient(135deg, var(--gold-lt), var(--saffron), var(--gold-lt));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1.2rem;
+  animation: pulse 2.2s ease-in-out infinite alternate;
+}
+@keyframes pulse { from { filter: brightness(1); } to { filter: brightness(1.35); } }
+
+.unlock-msg {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.85;
+  color: rgba(253,244,227,0.78);
+  margin-bottom: 2rem;
+}
+
+.voice-box {
+  display: inline-block;
+  background: rgba(200,146,26,0.07);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1.4rem 2rem;
+}
+.voice-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  color: var(--gold);
+  opacity: 0.75;
+  margin-bottom: 1rem;
+}
+audio {
+  display: block; width: 280px;
+  filter: sepia(0.4) saturate(1.6) hue-rotate(8deg);
+}
+
+/* ============================================================
+   CELEBRATION PARTICLES
+   ============================================================ */
+.petal {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10;
+  font-size: 1.1rem;
+  animation: fall linear forwards;
+  opacity: 0;
+  top: -2rem;
+}
+@keyframes fall {
+  0%   { transform: translateY(0)     rotate(0deg);   opacity: 0;   }
+  8%   {                                              opacity: 0.85; }
+  92%  {                                              opacity: 0.6;  }
+  100% { transform: translateY(105vh) rotate(660deg); opacity: 0;   }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 480px) {
+  .frame { padding: 2rem 1.5rem 2rem; }
+  .clue  { font-size: 0.92rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     INTRO
+══════════════════════════════════════════ -->
+<div class="screen active" id="intro">
+  <span class="diya">🪔</span>
+  <h1 class="intro-title">A Gift<br>For My Love</h1>
+  <p class="intro-sub">four locks · one truth · all of us</p>
+  <button class="begin-btn" onclick="goTo('s1')">Begin &nbsp;✦</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     STAGE 1 — KISMAT
+══════════════════════════════════════════ -->
+<div class="screen" id="s1">
+  <div class="frame">
+    <span class="corner-br" aria-hidden="true">✦</span>
+    <div class="act-tag">Act I</div>
+    <div class="act-name">Kismat</div>
+    <div class="act-meaning">fate &nbsp;·&nbsp; chance &nbsp;·&nbsp; destiny</div>
+    <div class="rule"><span>✦</span></div>
+    <p class="clue">
+      Out of everyone on Wizz, something pulled him to stop on your profile.
+      One line — impulsive, unplanned, completely unfiltered —
+      and everything started.
+      <br /><br />
+      What did he say?
+    </p>
+    <input class="puzzle-input" id="in1" type="text" placeholder="type your answer…" autocomplete="off" />
+    <button class="unlock-btn" onclick="check(1)">Unlock &nbsp;✦</button>
+    <div class="err-msg" id="err1"></div>
+    <div class="dots">
+      <div class="dot on"  id="dot1a"></div>
+      <div class="dot"     id="dot2a"></div>
+      <div class="dot"     id="dot3a"></div>
+      <div class="dot"     id="dot4a"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     STAGE 2 — WAPAS
+══════════════════════════════════════════ -->
+<div class="screen" id="s2">
+  <!--
+    🎵 DRIFTWOOD MUSIC
+    Drop your instrumental file into this same folder as index.html,
+    name it "driftwood.mp3", then uncomment the line below.
+  -->
+  <!-- <audio id="driftwood" src="driftwood.mp3" loop></audio> -->
+
+  <div class="frame">
+    <span class="corner-br" aria-hidden="true">✦</span>
+    <div class="act-tag">Act II</div>
+    <div class="act-name">Wapas</div>
+    <div class="act-meaning">return &nbsp;·&nbsp; the drift &nbsp;·&nbsp; coming back</div>
+    <div class="rule"><span>✦</span></div>
+    <p class="clue">
+      There was a silence between you two — a drift.
+      For a while, the story felt like it might just&hellip; stop.
+      <br /><br />
+      Then he found a TikTok post of yours,
+      left a comment, and pulled everything back together.
+      <br /><br />
+      What did he say?
+    </p>
+    <input class="puzzle-input" id="in2" type="text" placeholder="type your answer…" autocomplete="off" />
+    <button class="unlock-btn" onclick="check(2)">Unlock &nbsp;✦</button>
+    <div class="err-msg" id="err2"></div>
+    <div class="dots">
+      <div class="dot done"></div>
+      <div class="dot on"  ></div>
+      <div class="dot"     ></div>
+      <div class="dot"     ></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     STAGE 3 — RAAZ
+══════════════════════════════════════════ -->
+<div class="screen" id="s3">
+  <div class="frame">
+    <span class="corner-br" aria-hidden="true">✦</span>
+    <div class="act-tag">Act III</div>
+    <div class="act-name">Raaz</div>
+    <div class="act-meaning">secret &nbsp;·&nbsp; confession &nbsp;·&nbsp; the diary</div>
+    <div class="rule"><span>✦</span></div>
+    <p class="clue">
+      Before you ever said it out loud, you wrote it down.
+      How he met your cousins, your friends.
+      How you'd sacrifice sleep without a second thought.
+      How talking to him made every worry disappear.
+      <br /><br />
+      Four words that summed up exactly where you were.
+      <br /><br />
+      What did you write?
+    </p>
+    <input class="puzzle-input" id="in3" type="text" placeholder="type your answer…" autocomplete="off" />
+    <button class="unlock-btn" onclick="check(3)">Unlock &nbsp;✦</button>
+    <div class="err-msg" id="err3"></div>
+    <div class="dots">
+      <div class="dot done"></div>
+      <div class="dot done"></div>
+      <div class="dot on"  ></div>
+      <div class="dot"     ></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     STAGE 4 — SAPNA
+══════════════════════════════════════════ -->
+<div class="screen" id="s4">
+  <div class="frame">
+    <span class="corner-br" aria-hidden="true">✦</span>
+    <div class="act-tag">Act IV</div>
+    <div class="act-name">Sapna</div>
+    <div class="act-meaning">dream &nbsp;·&nbsp; after it all works out</div>
+    <div class="rule"><span>✦</span></div>
+    <p class="clue">
+      Like Raj and Simran, the road ahead won't be straight.
+      Families are traditional. Love takes patience and courage.
+      <br /><br />
+      But on the other side of all of it —
+      when it all works out, when the story lands —
+      there's a place already waiting for the two of you.
+      <br /><br />
+      Where does it end up?
+    </p>
+    <input class="puzzle-input" id="in4" type="text" placeholder="type your answer…" autocomplete="off" />
+    <button class="unlock-btn" onclick="check(4)">Unlock &nbsp;✦</button>
+    <div class="err-msg" id="err4"></div>
+    <div class="dots">
+      <div class="dot done"></div>
+      <div class="dot done"></div>
+      <div class="dot done"></div>
+      <div class="dot on"  ></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     UNLOCK / CELEBRATION
+══════════════════════════════════════════ -->
+<div class="screen" id="unlock">
+  <div class="unlock-inner">
+    <span class="unlock-diya">🪔</span>
+    <h2 class="unlock-title">Happy Birthday,<br />My Love&nbsp;🌸</h2>
+    <p class="unlock-msg">
+      You found your way through all four locks — just like you always do.<br />
+      From a chance line on Wizz, to the drift, to a diary,
+      to a dream on the other side of everything.<br /><br />
+      That&rsquo;s our story. And I wouldn&rsquo;t change a single page of it.
+    </p>
+    <div class="voice-box">
+      <div class="voice-label">✦ &nbsp; a message from him &nbsp; ✦</div>
+      <!--
+        🎙️ VOICE MESSAGE
+        Drop your voice recording into this folder, name it "voice.mp3",
+        then it will auto-play when she reaches this screen.
+      -->
+      <audio controls id="voiceMsg">
+        <source src="voice.mp3" type="audio/mpeg" />
+        Your browser does not support audio playback.
+      </audio>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
+<script>
+/* --------------------------------------------------
+   ANSWER VALIDATION
+-------------------------------------------------- */
+function normalise(s) {
+  return s.toLowerCase().trim().replace(/\s+/g, ' ').replace(/['']/g, "'");
+}
+
+const CHECKS = {
+  1: v => {
+    const s = normalise(v);
+    // Accept both "yo" and "yoo" variant
+    return s === 'yoo issa desi' || s === 'yo issa desi';
+  },
+  2: v => normalise(v) === 'you da real priyotoma',
+  3: v => {
+    const s = normalise(v).replace(/'/g, '');   // handle "i'm" vs "im"
+    return s === 'im too far gone' || s === "i'm too far gone";
+  },
+  4: v => normalise(v) === 'maldives',
+};
+
+const HINTS = {
+  1: 'Think back to the very first message he ever sent you…',
+  2: 'The comment that broke the silence 🍂',
+  3: 'Something you wrote in your diary before the confession…',
+  4: 'Where the honeymoon happens — after it all works out ✨',
+};
+
+const NEXT = { 1: 's2', 2: 's3', 3: 's4', 4: 'unlock' };
+
+/* --------------------------------------------------
+   NAVIGATION
+-------------------------------------------------- */
+function goTo(id) {
+  // Fade out all
+  document.querySelectorAll('.screen').forEach(el => {
+    el.classList.remove('active');
+  });
+
+  // Small delay so fade out registers
+  setTimeout(() => {
+    const target = document.getElementById(id);
+    target.classList.add('active');
+
+    // Auto-focus input
+    const input = target.querySelector('.puzzle-input');
+    if (input) setTimeout(() => input.focus(), 400);
+
+    // Driftwood music — plays on s2 only
+    const driftwood = document.getElementById('driftwood');
+    if (driftwood) {
+      if (id === 's2') {
+        driftwood.currentTime = 0;
+        driftwood.play().catch(() => {}); // silently handle autoplay block
+      } else {
+        driftwood.pause();
+        driftwood.currentTime = 0;
+      }
+    }
+
+    // Celebration + voice on unlock
+    if (id === 'unlock') {
+      launchCelebration();
+      setTimeout(() => {
+        const voice = document.getElementById('voiceMsg');
+        if (voice) voice.play().catch(() => {});
+      }, 1200);
+    }
+  }, 120);
+}
+
+/* --------------------------------------------------
+   ANSWER CHECKING
+-------------------------------------------------- */
+function check(stage) {
+  const input  = document.getElementById(`in${stage}`);
+  const errEl  = document.getElementById(`err${stage}`);
+  const frame  = input.closest('.frame');
+
+  if (CHECKS[stage](input.value)) {
+    // Correct
+    input.classList.add('correct');
+    errEl.textContent = '';
+    errEl.classList.remove('show');
+    setTimeout(() => {
+      input.classList.remove('correct');
+      input.value = '';
+      goTo(NEXT[stage]);
+    }, 650);
+  } else {
+    // Wrong
+    frame.classList.remove('shake');
+    void frame.offsetWidth; // reflow to restart animation
+    frame.classList.add('shake');
+    errEl.textContent = HINTS[stage];
+    errEl.classList.add('show');
+    setTimeout(() => frame.classList.remove('shake'), 500);
+  }
+}
+
+/* --------------------------------------------------
+   ENTER KEY SUPPORT
+-------------------------------------------------- */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const active = document.querySelector('.screen.active');
+  if (!active) return;
+  const btn = active.querySelector('.unlock-btn') || active.querySelector('.begin-btn');
+  if (btn) btn.click();
+});
+
+/* --------------------------------------------------
+   CELEBRATION PARTICLES
+-------------------------------------------------- */
+function launchCelebration() {
+  const pool = ['🌸','✨','🪔','🌺','⭐','💛','🏵️','🌼','🎊'];
+  const count = 38;
+
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'petal';
+      el.textContent = pool[Math.floor(Math.random() * pool.length)];
+      el.style.left            = (Math.random() * 100) + 'vw';
+      el.style.fontSize        = (0.8 + Math.random() * 1.3) + 'rem';
+      el.style.animationDuration  = (5 + Math.random() * 6) + 's';
+      el.style.animationDelay     = (Math.random() * 2)     + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 14000);
+    }, i * 120);
+  }
+
+  // Second wave
+  setTimeout(() => {
+    for (let i = 0; i < 20; i++) {
+      setTimeout(() => {
+        const el = document.createElement('div');
+        el.className = 'petal';
+        el.textContent = pool[Math.floor(Math.random() * pool.length)];
+        el.style.left               = (Math.random() * 100) + 'vw';
+        el.style.fontSize           = (0.7 + Math.random() * 1) + 'rem';
+        el.style.animationDuration  = (4 + Math.random() * 5) + 's';
+        el.style.animationDelay     = (Math.random() * 1.5)    + 's';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 12000);
+      }, i * 180);
+    }
+  }, 4000);
+}
+</script>
+</body>
+</html>
