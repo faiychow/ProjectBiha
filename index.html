@@ -620,11 +620,11 @@ function goTo(id) {
     const ddlj = document.getElementById('ddlj');
     if (ddlj) {
       if (id === 's3') {
-        driftwood.currentTime = 0;
-        driftwood.play().catch(() => {}); // silently handle autoplay block
+        ddlj.currentTime = 0;
+        ddlj.play().catch(() => {}); // silently handle autoplay block
       } else {
-        driftwood.pause();
-        driftwood.currentTime = 0;
+        ddlj.pause();
+        ddlj.currentTime = 0;
       }
     }
 
