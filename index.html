@@ -451,7 +451,7 @@ audio {
      STAGE 3 — RAAZ
 ══════════════════════════════════════════ -->
 <div class="screen" id="s3">
-  <audio id="ddlj" src="ddlj.mp3" loop></audio>
+  
   <div class="frame">
     <span class="corner-br" aria-hidden="true">✦</span>
     <div class="act-tag">Act III</div>
@@ -481,6 +481,7 @@ audio {
      STAGE 4 — SAPNA
 ══════════════════════════════════════════ -->
 <div class="screen" id="s4">
+  <audio id="ddlj" src="ddlj.mp3" loop></audio>
   <div class="frame">
     <span class="corner-br" aria-hidden="true">✦</span>
     <div class="act-tag">Act IV</div>
@@ -619,7 +620,7 @@ function goTo(id) {
 
     const ddlj = document.getElementById('ddlj');
     if (ddlj) {
-      if (id === 's3') {
+      if (id === 's4') {
         ddlj.currentTime = 0;
         ddlj.play().catch(() => {}); // silently handle autoplay block
       } else {
